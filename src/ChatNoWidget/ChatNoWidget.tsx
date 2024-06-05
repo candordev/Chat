@@ -45,6 +45,9 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const [email, setEmail] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [animateOut, setAnimateOut] = useState<boolean>(false);
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const [city, setCity] = useState<string | null>(null);
 
 
   useEffect(() => {
@@ -69,8 +72,26 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
       setSessionId(sessionId);
       await fetchChats();
     };
+    const getLocation = async () => {
+      try {
+        const response = await fetch("https://ipinfo.io/json?token=00bb23c8331675", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" }
+        });
+        if (!response.ok) throw new Error('Failed to get location');
+        const data = await response.json();
+        console.log("location:", response);
+        setLatitude(Number(data.loc.split(',')[0]));
+        setLongitude(Number(data.loc.split(',')[1]));
+        setCity(data.city);
+        console.log("location: ", data.loc, data.city)
+      } catch (error) {
+        console.error('Failed to get location', error);
+      }
+    }
 
     initialize();
+    getLocation();
     
   }, [userType]);
 
@@ -151,7 +172,10 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
           Body: text, 
           sessionId: sessionId,
           userType: userType,
-          groupId: groupId
+          groupId: groupId,
+          latitude: latitude,
+          longitude: longitude,
+          city: city
         })
       });
       if (!response.ok) throw new Error('Failed to send chat');
