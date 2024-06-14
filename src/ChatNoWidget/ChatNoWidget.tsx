@@ -165,12 +165,12 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
         return;
       }
 
-      const response = await fetch(`${baseUrl}/chat/whatsAppLangchainReply`, {
+      const response = await fetch(`${baseUrl}/chat/webChatReply`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          Body: text, 
-          sessionId: sessionId,
+          userMessage: text, 
+          userSessionID: sessionId,
           userType: userType,
           groupId: groupId,
           latitude: latitude,
