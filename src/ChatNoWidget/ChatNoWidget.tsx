@@ -19,7 +19,7 @@ interface ChatNoWidgetProps {
 
 function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const config = {
-    environment: 'localhost', // Default environment
+    environment: 'candoradmin', // Default environment
     urls: {
       candoradmin: 'https://candoradmin.com/api',
       localhost: 'http://localhost:4000/api'
@@ -44,7 +44,6 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
-  const [animateOut, setAnimateOut] = useState<boolean>(false);
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [city, setCity] = useState<string | null>(null);
@@ -247,18 +246,10 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
     }
   };
 
-  const handleCloseChat = () => {
-    setAnimateOut(true);
-    setTimeout(() => {
-      closeChat && closeChat();
-      setAnimateOut(false);
-    }, 500);
-  }
-
   const isFormFilled = firstName && lastName && email && phoneNumber;
 
   return (
-    <div id="chatContainer" className={animateOut ? 'slideUp' : ''}>
+    <div id="chatContainer" className={'slideUp'}>
       <div id="chatHeader">
         <div id="chatIconHeader">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#053c6b" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" className="feather feather-message-square">
