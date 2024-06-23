@@ -22,7 +22,7 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
         <div>
           {showPopup && (
             <div id="popup">
-              <span id="popupText">Have any questions? Ask here!</span>
+              <span id="popupText">Have any property questions? Ask here!</span>
               <button id="closePopup" onClick={() => setShowPopup(false)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

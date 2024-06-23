@@ -130,18 +130,16 @@ function ChatNoWidgetProperties({closeChat}: ChatNoWidgetPropertiesProps) {
         return;
       }
 
-      const response = await fetch(`${baseUrl}/chat/webChatReply`, {
+      const response = await fetch(`${baseUrl}/chat/listingsAssistantAI`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          userMessage: text, 
-          userSessionID: sessionId,
-          groupId: groupId,
-          latitude: latitude,
-          longitude: longitude,
-          city: city
+          Body: text, 
+          From: sessionId,
+          groupId: groupId
         })
       });
+
       if (!response.ok) throw new Error('Failed to send chat');
     
     //   const responseData = await response.json();
@@ -178,7 +176,7 @@ function ChatNoWidgetProperties({closeChat}: ChatNoWidgetPropertiesProps) {
         )}
       </div>
       <div id="messagesView">
-        <div className="message from-bot">To get your conversation started, choose from one of the following options below and type a question in the entry field.</div>
+        <div className="message from-bot">To get your conversation started, ask a question about any Thirdstone Property.</div>
         {chats.map((chat, index) => {
           return (
             <div key={index} className={`message ${chat.author === 'AI' ? 'from-bot' : 'from-user'}`}>{chat.content}</div>
