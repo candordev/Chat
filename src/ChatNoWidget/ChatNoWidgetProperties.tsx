@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import classNames from 'classnames';
 import './ChatNoWidget.css'
 
 interface Chat {
@@ -27,10 +26,6 @@ function ChatNoWidgetProperties({closeChat}: ChatNoWidgetPropertiesProps) {
   const [chats, setChats] = useState<Chat[]>([]);
   const [inputChat, setInputChat] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [latitude, setLatitude] = useState<number | null>(null);
-  const [longitude, setLongitude] = useState<number | null>(null);
-  const [city, setCity] = useState<string | null>(null);
-
 
   useEffect(() => {
     // Set groupId based on the environment
@@ -60,9 +55,6 @@ function ChatNoWidgetProperties({closeChat}: ChatNoWidgetPropertiesProps) {
         if (!response.ok) throw new Error('Failed to get location');
         const data = await response.json();
         console.log("location:", response);
-        setLatitude(Number(data.loc.split(',')[0]));
-        setLongitude(Number(data.loc.split(',')[1]));
-        setCity(data.city);
         console.log("location: ", data.loc, data.city)
       } catch (error) {
         console.error('Failed to get location', error);
@@ -74,9 +66,9 @@ function ChatNoWidgetProperties({closeChat}: ChatNoWidgetPropertiesProps) {
     
   }, []);
 
-  const resetChats = () => {
-    setChats([]);
-  }
+  // const resetChats = () => {
+  //   setChats([]);
+  // }
 
   const fetchChats = async () => {
     try {
@@ -107,11 +99,11 @@ function ChatNoWidgetProperties({closeChat}: ChatNoWidgetPropertiesProps) {
     return Math.random().toString(36).substr(2, 9);
   };
 
-  const resetSessionId = () => {
-    const newSessionId = generateSessionId();
-    localStorage.setItem('candorSessionID', newSessionId);
-    setSessionId(newSessionId);
-  };
+  // const resetSessionId = () => {
+  //   const newSessionId = generateSessionId();
+  //   localStorage.setItem('candorSessionID', newSessionId);
+  //   setSessionId(newSessionId);
+  // };
 
   const  sendChat = async (text: string) => {
     try {
