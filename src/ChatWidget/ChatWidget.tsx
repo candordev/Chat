@@ -17,9 +17,9 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
   };
 
   return (
-    <>
+    <div className={`chat-widget-collapsed ${!showChat ? 'click-through' : ''}`}>
       {!showChat ? (
-        <div style={{pointerEvents:'none'}}>
+        <div className={`chat-widget-collapsed ${!showChat ? 'click-through' : ''}`}>
           {showPopup && (
             <div id="popup">
               <span id="popupText">Have any property questions? Ask here!</span>
@@ -64,7 +64,7 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
       ) : (
         <ChatNoWidget closeChat={handleCloseChat} />
       )}
-    </>
+    </div>
   );
 }
 
