@@ -13,14 +13,6 @@
     animation: slideUpIcon 0.5s forwards;
   }
   
-  .chat-widget-collapsed {
-    position: relative;
-  }
-  
-  .click-through {
-    pointer-events: none;
-  }
-  
   #popupText {
     font-size: 14px; 
     margin-right: 30px;
