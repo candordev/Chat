@@ -17,9 +17,9 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
   };
 
   return (
-    <div className={`chat-widget ${showChat ? 'expanded' : 'collapsed'}`}>
+    <>
       {!showChat ? (
-        <>
+        <div style={{pointerEvents:'none'}}>
           {showPopup && (
             <div id="popup">
               <span id="popupText">Have any property questions? Ask here!</span>
@@ -58,13 +58,13 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
           </div>
-        </>
+        </div>
       ) : chatType === 'properties' ? (
         <ChatNoWidgetProperties closeChat={handleCloseChat} />
       ) : (
         <ChatNoWidget closeChat={handleCloseChat} />
       )}
-    </div>
+    </>
   );
 }
 
