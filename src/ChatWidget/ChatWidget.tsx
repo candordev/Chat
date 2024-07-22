@@ -12,7 +12,7 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
   const [showChat, setShowChat] = useState<boolean>(false);
 
   const sendMessageToParent = (message: string) => {
-    window.parent.postMessage(message, 'https://www.candornow.com/ourstory');
+    window.parent.postMessage(message, 'https://www.candornow.com');
   };
 
   const handleShowChatChange = (show: boolean) => {
