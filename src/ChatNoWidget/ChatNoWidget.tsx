@@ -19,7 +19,7 @@ interface ChatNoWidgetProps {
 
 function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const config = {
-    environment: 'candoradmin', // Default environment
+    environment: 'localhost', // Default environment
     urls: {
       candoradmin: 'https://candoradmin.com/api',
       localhost: 'http://localhost:4000/api'
@@ -164,7 +164,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
         return;
       }
 
-      const response = await fetch(`${baseUrl}/chat/webChatReply`, {
+      const response = await fetch(`${baseUrl}/chat/thirdstoneChatReply`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
