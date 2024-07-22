@@ -11,9 +11,18 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
   const [showPopup, setShowPopup] = useState<boolean>(true);
   const [showChat, setShowChat] = useState<boolean>(false);
 
+  const sendMessageToParent = (message: string) => {
+    window.parent.postMessage(message, 'https://candornow.com');
+  };
+
+  const handleShowChatChange = (show: boolean) => {
+    setShowChat(show);
+    setShowPopup(!show);
+    sendMessageToParent(show ? 'Expanded' : 'Collapsed');
+  };
+
   const handleCloseChat = () => {
-    setShowChat(false);
-    setShowPopup(true);
+    handleShowChatChange(false);
   };
 
   return (
@@ -42,7 +51,7 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
               </button>
             </div>
           )}
-          <div id="chatIcon" onClick={() => setShowChat(true)}>
+          <div id="chatIcon" onClick={() => handleShowChatChange(true)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
