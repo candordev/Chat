@@ -13,6 +13,7 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
 
   const sendMessageToParent = (message: string) => {
     window.parent.postMessage(message, 'https://www.candornow.com');
+    window.parent.postMessage(message, 'https://www.thirdstoneproperties.com');
   };
 
   const handleShowChatChange = (show: boolean) => {
