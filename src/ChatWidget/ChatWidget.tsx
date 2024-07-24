@@ -25,6 +25,15 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
     }
   };
 
+  const handlePopupChange = (popup: boolean) => {
+    setShowPopup(popup);
+    if (showPopup) {
+      sendMessageToParent(showChat ? 'Expanded' : 'Collapsed Popup');
+    } else {
+      sendMessageToParent(showChat ? 'Expanded' : 'Collapsed');
+    }
+  }
+
   const handleCloseChat = () => {
     handleShowChatChange(false);
   };
@@ -36,7 +45,7 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
           {showPopup && (
             <div id="popup">
               <span id="popupText">Have any property questions? Ask here!</span>
-              <button id="closePopup" onClick={() => setShowPopup(false)}>
+              <button id="closePopup" onClick={() => handlePopupChange(false)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
