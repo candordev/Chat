@@ -18,8 +18,11 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
 
   const handleShowChatChange = (show: boolean) => {
     setShowChat(show);
-    setShowPopup(!show);
-    sendMessageToParent(show ? 'Expanded' : 'Collapsed');
+    if (showPopup) {
+      sendMessageToParent(show ? 'Expanded' : 'Collapsed Popup');
+    } else {
+      sendMessageToParent(show ? 'Expanded' : 'Collapsed');
+    }
   };
 
   const handleCloseChat = () => {
