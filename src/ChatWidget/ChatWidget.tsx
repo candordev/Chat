@@ -23,7 +23,7 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
 
   const handleClosePopup = () => {
     setShowPopup(false);
-    sendMessageToParent('Collapsed Popup');
+    sendMessageToParent('Collapsed');
   };
 
   const handleCloseChat = () => {
