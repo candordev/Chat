@@ -102,7 +102,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
     try {
       if (!sessionId || !groupId) return;
       const baseUrl = getBaseUrl();
-      const response = await fetch(`${baseUrl}/chat/getWebChats?sessionId=${sessionId}&page=1&limit=10&groupID=${groupId}`, {
+      const response = await fetch(`${baseUrl}/chat/getWebChats?sessionId=${sessionId}&page=1&limit=100&groupID=${groupId}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
       });
