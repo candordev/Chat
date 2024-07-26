@@ -35,4 +35,4 @@ jobs:
 
       - name: Upload thirdstoneIntegration.html to S3
         run: |
-          aws s3 cp thirdstoneIntegration.html s3://candor-community-documents/widgets/thirdstoneIntegration.html
+          aws s3 cp ./src/WixIntegrations/thirdstoneIntegration.html s3://candor-community-documents/widgets/thirdstoneIntegration.html
