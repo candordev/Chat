@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import classNames from 'classnames';
 import './ChatNoWidget.css'
+import Linkify from 'linkify-it';
+
+const linkify = new Linkify();
 
 interface Chat {
   _id: string;
@@ -246,6 +249,37 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
     }
   };
 
+  const renderContent = (content: string) => {
+    const matches = linkify.match(content);
+    if (matches) {
+      let lastIndex = 0;
+      const parts = [];
+
+      matches.forEach((match, index) => {
+        // Add text before the link
+        if (match.index > lastIndex) {
+          parts.push(content.substring(lastIndex, match.index));
+        }
+        // Add the link
+        parts.push(
+          <a href={match.url} key={index} target="_blank" rel="noopener noreferrer">
+            {match.text}
+          </a>
+        );
+        lastIndex = match.lastIndex;
+      });
+
+      // Add any remaining text after the last link
+      if (lastIndex < content.length) {
+        parts.push(content.substring(lastIndex));
+      }
+
+      return parts;
+    }
+    return content;
+  };
+
+
   const isFormFilled = firstName && lastName && email && phoneNumber;
 
   return (
@@ -266,11 +300,11 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
       </div>
       <div id="messagesView">
         <div className="message from-bot">To get your conversation started, choose from one of the following options below and type a question in the entry field.</div>
-        {chats.map((chat, index) => {
-          return (
-            <div key={index} className={`message ${chat.author === 'AI' ? 'from-bot' : 'from-user'}`}>{chat.content}</div>
-          );
-        })}
+        {chats.map((chat, index) => (
+          <div key={index} className={`message ${chat.author === 'AI' ? 'from-bot' : 'from-user'}`}>
+            {renderContent(chat.content)}
+          </div>
+        ))}
         {loading && 
           <div className="message from-bot">
             <div className="loading-dots">
