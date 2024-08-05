@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import classNames from 'classnames';
 import './ChatNoWidget.css'
 import Linkify from 'linkify-it';
+import React from 'react';
+import { JSX } from 'react/jsx-runtime';
 
 const linkify = new Linkify();
 
@@ -250,35 +252,64 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   };
 
   const renderContent = (content: string) => {
-    const matches = linkify.match(content);
-    if (matches) {
-      let lastIndex = 0;
-      const parts = [];
-
-      matches.forEach((match, index) => {
-        // Add text before the link
-        if (match.index > lastIndex) {
-          parts.push(content.substring(lastIndex, match.index));
+    // Split the content into parts by detecting the bold pattern '**'
+    const parts = content.split(/(\*\*[^*]+\*\*)/g);
+  
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        // Bold formatting
+        return <strong key={i}>{part.slice(2, -2)}</strong>;
+      } else {
+        // Handle links and newlines within the normal text parts
+        const matches = linkify.match(part);
+        if (matches) {
+          let lastIndex = 0;
+          const subParts: any[] | JSX.Element = [];
+  
+          matches.forEach((match, index) => {
+            // Add text before the link and handle newlines
+            if (match.index > lastIndex) {
+              const textBeforeLink = part.substring(lastIndex, match.index);
+              textBeforeLink.split('\n').forEach((subPart, j, arr) => {
+                subParts.push(subPart);
+                if (j < arr.length - 1) {
+                  subParts.push(<br key={`br-${i}-${j}`} />);
+                }
+              });
+            }
+            // Add the link
+            subParts.push(
+              <a href={match.url} key={index} target="_blank" rel="noopener noreferrer">
+                {match.text}
+              </a>
+            );
+            lastIndex = match.lastIndex;
+          });
+  
+          // Add any remaining text after the last link and handle newlines
+          if (lastIndex < part.length) {
+            const textAfterLastLink = part.substring(lastIndex);
+            textAfterLastLink.split('\n').forEach((subPart, j, arr) => {
+              subParts.push(subPart);
+              if (j < arr.length - 1) {
+                subParts.push(<br key={`br-${i}-${lastIndex}-${j}`} />);
+              }
+            });
+          }
+  
+          return subParts;
         }
-        // Add the link
-        parts.push(
-          <a href={match.url} key={index} target="_blank" rel="noopener noreferrer">
-            {match.text}
-          </a>
-        );
-        lastIndex = match.lastIndex;
-      });
-
-      // Add any remaining text after the last link
-      if (lastIndex < content.length) {
-        parts.push(content.substring(lastIndex));
+  
+        // Handle newlines in the entire content if no links are present
+        return part.split('\n').map((subPart, j, arr) => (
+          <React.Fragment key={j}>
+            {subPart}
+            {j < arr.length - 1 && <br />}
+          </React.Fragment>
+        ));
       }
-
-      return parts;
-    }
-    return content;
+    });
   };
-
 
   const isFormFilled = firstName && lastName && email && phoneNumber;
 
