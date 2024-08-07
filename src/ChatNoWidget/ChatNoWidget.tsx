@@ -156,7 +156,6 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
 
   const menuToChatPage = () => {
     resetSessionId()
-    setUserType(null)
     setChats([])
     changeCurrentPage('chat')
   }
@@ -173,9 +172,13 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
     return Math.random().toString(36).substr(2, 9);
   };
 
-  const handleUserTypeChange = (userType: string) => {
+  const handleUserTypeChange = (userType: string | null) => {
     console.log(`Setting userType to: ${userType}`);
-    localStorage.setItem('userType', userType);
+    if (userType) {
+      localStorage.setItem('userType', userType);
+    } else {
+      localStorage.setItem('userType', "")
+    }
     setUserType(userType);
     resetChats();
     resetSessionId();
@@ -355,11 +358,67 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
 
   const isFormFilled = firstName && lastName && email && phoneNumber;
 
-   const renderMainMenu = () => (
+  const renderMainMenu = () => (
     <div id="mainMenu">
-      <button className="menuButton" onClick={menuToChatPage}>Chat</button>
-      <button className="menuButton">Email Us</button>
-      <button className="menuButton">Schedule Appointment</button>
+      <div className="dropdownContainer">
+        <label htmlFor="userTypeDropdown">Select what best describes you:</label>
+        <select
+          id="userTypeDropdown"
+          value={userType || ""}
+          onChange={(e) => handleUserTypeChange(e.target.value)}
+        >
+          <option value="">Select an option</option>
+          <option value="prospectiveResident">Looking to Rent a Home</option>
+          <option value="currentResident">Current Tenant</option>
+          <option value="owner">Property Owner</option>
+        </select>
+      </div>
+      {userType && (
+        <>
+          <button className="menuButton" onClick={menuToChatPage}>
+            Chat
+            <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#FFFFFF">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <path d="M8 10.5H16" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"></path>
+                <path d="M8 14H13.5" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"></path>
+                <path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"></path>
+              </g>
+            </svg>
+          </button>
+          <button className="menuButton">
+            Email Us
+            <svg width="25px" height="25px" viewBox="0 -2.5 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <title>email [#ffffff]</title>
+                <desc>Created with Sketch.</desc>
+                <defs></defs>
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g id="Dribbble-Light-Preview" transform="translate(-300.000000, -922.000000)" fill="#ffffff">
+                    <g id="icons" transform="translate(56.000000, 160.000000)">
+                      <path d="M262,764.291 L254,771.318 L246,764.281 L246,764 L262,764 L262,764.291 Z M246,775 L246,766.945 L254,773.98 L262,766.953 L262,775 L246,775 Z M244,777 L264,777 L264,762 L244,762 L244,777 Z" id="email-[#ffffff]"></path>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </button>
+          <button className="menuButton">
+            Schedule Appointment
+            <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <path d="M3 9H21M7 3V5M17 3V5M6 12H8M11 12H13M16 12H18M6 15H8M11 15H13M16 15H18M6 18H8M11 18H13M16 18H18M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round"></path>
+              </g>
+            </svg>
+          </button>
+        </>
+      )}
+      
     </div>
   );
 
@@ -378,32 +437,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
                 <div style={{ display: 'flex', alignItems: 'flex-end' }}>
                   {isLastInGroup ? (
                     <div className="ai-icon">
-                      <svg
-                        width="24px"
-                        height="24px"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        stroke="#000000"
-                        strokeWidth="0.00024000000000000003"
-                      >
-                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          stroke="#CCCCCC"
-                          strokeWidth="0.144"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M14 2C14 2.74028 13.5978 3.38663 13 3.73244V4H20C21.6569 4 23 5.34315 23 7V19C23 20.6569 21.6569 22 20 22H4C2.34315 22 1 20.6569 1 19V7C1 5.34315 2.34315 4 4 4H11V3.73244C10.4022 3.38663 10 2.74028 10 2C10 0.895431 10.8954 0 12 0C13.1046 0 14 0.895431 14 2ZM4 6H11H13H20C20.5523 6 21 6.44772 21 7V19C21 19.5523 20.5523 20 20 20H4C3.44772 20 3 19.5523 3 19V7C3 6.44772 3.44772 6 4 6ZM15 11.5C15 10.6716 15.6716 10 16.5 10C17.3284 10 18 10.6716 18 11.5C18 12.3284 17.3284 13 16.5 13C15.6716 13 15 12.3284 15 11.5ZM16.5 8C14.567 8 13 9.567 13 11.5C13 13.433 14.567 15 16.5 15C18.433 15 20 13.433 20 11.5C20 9.567 18.433 8 16.5 8ZM7.5 10C6.67157 10 6 10.6716 6 11.5C6 12.3284 6.67157 13 7.5 13C8.32843 13 9 12.3284 9 11.5C9 10.6716 8.32843 10 7.5 10ZM4 11.5C4 9.567 5.567 8 7.5 8C9.433 8 11 9.567 11 11.5C11 13.433 9.433 15 7.5 15C5.567 15 4 13.433 4 11.5ZM10.8944 16.5528C10.6474 16.0588 10.0468 15.8586 9.55279 16.1056C9.05881 16.3526 8.85858 16.9532 9.10557 17.4472C9.68052 18.5971 10.9822 19 12 19C13.0178 19 14.3195 18.5971 14.8944 17.4472C15.1414 16.9532 14.9412 16.3526 14.4472 16.1056C13.9532 15.8586 13.3526 16.0588 13.1056 16.5528C13.0139 16.7362 12.6488 17 12 17C11.3512 17 10.9861 16.7362 10.8944 16.5528Z"
-                            fill="#000000"
-                          ></path>
-                        </g>
-                      </svg>
+                      <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 2C14 2.74028 13.5978 3.38663 13 3.73244V4H20C21.6569 4 23 5.34315 23 7V19C23 20.6569 21.6569 22 20 22H4C2.34315 22 1 20.6569 1 19V7C1 5.34315 2.34315 4 4 4H11V3.73244C10.4022 3.38663 10 2.74028 10 2C10 0.895431 10.8954 0 12 0C13.1046 0 14 0.895431 14 2ZM4 6H11H13H20C20.5523 6 21 6.44772 21 7V19C21 19.5523 20.5523 20 20 20H4C3.44772 20 3 19.5523 3 19V7C3 6.44772 3.44772 6 4 6ZM15 11.5C15 10.6716 15.6716 10 16.5 10C17.3284 10 18 10.6716 18 11.5C18 12.3284 17.3284 13 16.5 13C15.6716 13 15 12.3284 15 11.5ZM16.5 8C14.567 8 13 9.567 13 11.5C13 13.433 14.567 15 16.5 15C18.433 15 20 13.433 20 11.5C20 9.567 18.433 8 16.5 8ZM7.5 10C6.67157 10 6 10.6716 6 11.5C6 12.3284 6.67157 13 7.5 13C8.32843 13 9 12.3284 9 11.5C9 10.6716 8.32843 10 7.5 10ZM4 11.5C4 9.567 5.567 8 7.5 8C9.433 8 11 9.567 11 11.5C11 13.433 9.433 15 7.5 15C5.567 15 4 13.433 4 11.5ZM10.8944 16.5528C10.6474 16.0588 10.0468 15.8586 9.55279 16.1056C9.05881 16.3526 8.85858 16.9532 9.10557 17.4472C9.68052 18.5971 10.9822 19 12 19C13.0178 19 14.3195 18.5971 14.8944 17.4472C15.1414 16.9532 14.9412 16.3526 14.4472 16.1056C13.9532 15.8586 13.3526 16.0588 13.1056 16.5528C13.0139 16.7362 12.6488 17 12 17C11.3512 17 10.9861 16.7362 10.8944 16.5528Z" fill="#053c6b"></path> </g></svg>
                     </div>
                   ) : (
                     <div className="ai-icon-placeholder"></div>
@@ -421,7 +455,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                   <div className="ai-icon-placeholder"></div>
                   <div className="timestamp">
-                    {`Candor Assistant | ${formatTime(chat.date)}`}
+                    {`Thirdstone Assistant | ${formatTime(chat.date)}`}
                   </div>
                 </div>
               )}
@@ -456,7 +490,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
         </div>
       )}
       <div id="chatControls">
-        <div id="chatOptions">
+        {/* <div id="chatOptions">
           <div id="chatButtonsRow">
             <button
               id="prospectiveTenant"
@@ -492,7 +526,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
               Home Owner
             </button>
           </div>
-        </div>
+        </div> */}
         {userType && 
           <div id="chatInputContainer">
             <input
@@ -519,11 +553,11 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
           </svg>
         </div>
         <div className="ml-4 flex-grow flex flex-col justify-center">
-          <span className="text-lg font-medium">Welcome to the Thirdstone Assistant!</span>
-          <span className="mt-2 text-gray-500 text-sm font-light"  onClick={() => changeCurrentPage('main-menu')}>Online</span>
+          <span className="text-lg font-medium">Thirdstone Assistant</span>
+          <span className="mt-1 text-gray-500 text-sm font-light"  onClick={() => changeCurrentPage('main-menu')}>Online</span>
         </div>
         {closeChat && (
-          <button id="closeButton" onClick={closeChat}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+          <button id="closeButton" onClick={closeChat}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" className="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         )}
       </div>
       {currentPage === 'main-menu' ? renderMainMenu() : renderChatInterface()}
