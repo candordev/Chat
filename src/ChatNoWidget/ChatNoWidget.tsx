@@ -330,7 +330,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
         )}
       </div>
       <div id="messagesView">
-        <div className="message from-bot">To get your conversation started, choose from one of the following options below and type a question in the entry field.</div>
+        <div className="message from-bot">To get your conversation started, choose from one of the following options below or type a question in the entry field.</div>
         {chats.map((chat, index) => (
           <div key={index} className={`message ${chat.author === 'AI' ? 'from-bot' : 'from-user'}`}>
             {renderContent(chat.content)}
