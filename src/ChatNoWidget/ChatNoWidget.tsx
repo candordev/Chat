@@ -27,7 +27,8 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
     environment: 'candoradmin', // Default environment
     urls: {
       candoradmin: 'https://candoradmin.com/api',
-      localhost: 'http://localhost:4000/api'
+      localhost: 'http://localhost:4000/api',
+      productionTest: 'https://candoradmin.com/api'
     }
   };
 
@@ -62,6 +63,8 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
         setGroupId('6657a0e9d9f0ae27bd3e0021'); // DEV groupId
       } else if (config.environment === 'candoradmin') {
         setGroupId('663fa89af38d72f0490da655'); // PRODUCTION groupId
+      } else if (config.environment === 'productionTest') {
+        setGroupId('6657a0e9d9f0ae27bd3e0021'); // DEV groupId
       }
 
       let sessionId = getSessionId(); 
