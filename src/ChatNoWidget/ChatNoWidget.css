@@ -97,6 +97,31 @@
     max-width: 80%;
   }
 
+  .timestamp {
+    color: gray;
+    font-size: 9pt;
+    margin-bottom: 8px;
+  }
+
+  .timestamp-container {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .timestamp-container.with-placeholder .timestamp {
+    margin-left: 32px; /* Adjust as needed for placeholder width */
+  }
+
+  .message-group.from-bot + .timestamp {
+    text-align: left;
+    margin-left: 4px;
+  }
+  
+  .message-group.from-user + .timestamp {
+    text-align: right;
+    margin-right: 4px;
+  }
+
   .message a {
     color: blue;
     text-decoration: underline;
@@ -125,7 +150,34 @@
     border-radius: 15px;
     font-size: 14px; /* Smaller text size */
     font-weight: 500;
+    /* margin-left: 30px; */
   }
+
+  .ai-icon {
+    width: 24px;
+    height: 24px;
+    background-color: grey;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+  }
+
+  .ai-icon-placeholder {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+  }
+  
   #exampleQuestionsContainer {
     padding: 10px;
     /* text-align: center; */
@@ -149,6 +201,7 @@
     width: 100%;
     text-align: center;
   }
+
   #chatControls {
     transition: margin-top 0.3s ease;
     margin-top: 0; /* Initially, no extra space */
@@ -209,7 +262,7 @@
     margin-right: 10px; /* Ensures spacing between input and button */
     outline: none; /* Removes the default focus outline */
     font-family: 'Roboto', sans-serif;
-    font-size: 12px;
+    font-size: 14px;
   }
   
   #sendButton {
@@ -345,5 +398,31 @@
     background-color: #053c6b; 
     color: white; 
     cursor: pointer; 
+  }
+  
+  #mainMenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 56px); /* Adjust to account for the header height */
+  }
+  
+  .menuButton {
+    width: 80%;
+    padding: 16px;
+    margin: 10px 0;
+    font-size: 18px;
+    text-align: center;
+    background-color: #053c6b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menuButton:hover {
+    background-color: #042a4b;
   }
   
