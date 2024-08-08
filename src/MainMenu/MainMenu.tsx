@@ -1,8 +1,22 @@
+import { useNavigate } from 'react-router-dom';
+import React from 'react';
+
 function MainMenu() {
+    const navigate = useNavigate();
+
+    const handleButtonClick = (userType: string) => {
+        if (userType === "owner") {
+            navigate("/owner");
+        } else {
+            navigate("/chat")
+        }
+    };
+
     return (
         <div id="mainMenu">
-            <button className="menuButton" onClick={menuToChatPage}>
-                Chat
+            <label htmlFor="userTypeDropdown">Select what best describes you:</label>
+            <button className="menuButton" onClick={()=> {handleButtonClick("prospectiveResident")}}>
+                Looking to Rent a Home
                 <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#FFFFFF">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -13,8 +27,8 @@ function MainMenu() {
                 </g>
                 </svg>
             </button>
-            <button className="menuButton">
-                Email Us
+            <button className="menuButton" onClick={()=> {handleButtonClick("currentResident")}}>
+                Current Tenant
                 <svg width="25px" height="25px" viewBox="0 -2.5 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -32,8 +46,8 @@ function MainMenu() {
                 </g>
                 </svg>
             </button>
-            <button className="menuButton">
-                Schedule Appointment
+            <button className="menuButton" onClick={()=> {handleButtonClick("owner")}}>
+                Home Owner
                 <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
