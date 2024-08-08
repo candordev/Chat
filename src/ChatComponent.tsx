@@ -1,20 +1,15 @@
 import { useParams } from 'react-router-dom';
 import ChatNoWidget from './ChatNoWidget/ChatNoWidget';
 import ChatWidget from './ChatWidget/ChatWidget';
-import ChatNoWidgetProperties from './ChatNoWidget/ChatNoWidgetProperties';
 
 
 const ChatComponent = () => {
-  const { chatFormat, chatType } = useParams<{ chatFormat: string, chatType: string }>();
+  const { chatFormat } = useParams<{ chatFormat: string }>();
 
   if (chatFormat === "no-widget") {
-    if (chatType === "properties") {
-      return <ChatNoWidgetProperties />;
-    } else {
-      return <ChatNoWidget />; 
-    }
+    return <ChatNoWidget />;
   } else {
-    return <ChatWidget chatType={chatType} />;
+    return <ChatWidget />;
   }
 };
 

@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames';
 import './ChatNoWidget.css'
-import Linkify from 'linkify-it';
 import React from 'react';
-import { JSX } from 'react/jsx-runtime';
-import { format, set } from 'date-fns';
+import { format } from 'date-fns';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import linkifyStr from 'linkify-string';
 
-const linkify = new Linkify();
 
 interface Chat {
   _id: string;
@@ -25,7 +25,7 @@ interface ChatNoWidgetProps {
 
 function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const config = {
-    environment: 'localhost', // Default environment
+    environment: 'productionTest', // Default environment
     urls: {
       candoradmin: 'https://candoradmin.com/api',
       localhost: 'http://localhost:4000/api',
@@ -293,63 +293,9 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   };
 
   const renderContent = (content: string) => {
-    // Split the content into parts by detecting the bold pattern '**'
-    const parts = content.split(/(\*\*[^*]+\*\*)/g);
-  
-    return parts.map((part, i) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        // Bold formatting
-        return <strong key={i}>{part.slice(2, -2)}</strong>;
-      } else {
-        // Handle links and newlines within the normal text parts
-        const matches = linkify.match(part);
-        if (matches) {
-          let lastIndex = 0;
-          const subParts: any[] | JSX.Element = [];
-  
-          matches.forEach((match, index) => {
-            // Add text before the link and handle newlines
-            if (match.index > lastIndex) {
-              const textBeforeLink = part.substring(lastIndex, match.index);
-              textBeforeLink.split('\n').forEach((subPart, j, arr) => {
-                subParts.push(subPart);
-                if (j < arr.length - 1) {
-                  subParts.push(<br key={`br-${i}-${j}`} />);
-                }
-              });
-            }
-            // Add the link
-            subParts.push(
-              <a href={match.url} key={index} target="_blank" rel="noopener noreferrer">
-                {match.text}
-              </a>
-            );
-            lastIndex = match.lastIndex;
-          });
-  
-          // Add any remaining text after the last link and handle newlines
-          if (lastIndex < part.length) {
-            const textAfterLastLink = part.substring(lastIndex);
-            textAfterLastLink.split('\n').forEach((subPart, j, arr) => {
-              subParts.push(subPart);
-              if (j < arr.length - 1) {
-                subParts.push(<br key={`br-${i}-${lastIndex}-${j}`} />);
-              }
-            });
-          }
-  
-          return subParts;
-        }
-  
-        // Handle newlines in the entire content if no links are present
-        return part.split('\n').map((subPart, j, arr) => (
-          <React.Fragment key={j}>
-            {subPart}
-            {j < arr.length - 1 && <br />}
-          </React.Fragment>
-        ));
-      }
-    });
+    const options = {};
+    linkifyStr(content, options);
+    return <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>;
   };
   
   const formatTime = (date: Date) => {

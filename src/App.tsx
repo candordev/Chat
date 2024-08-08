@@ -5,7 +5,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/:chatFormat?/:chatType?" element={<ChatComponent />} />
+        <Route path="/:chatFormat?" element={<ChatComponent />} />
       </Routes>
     </Router>
   );
