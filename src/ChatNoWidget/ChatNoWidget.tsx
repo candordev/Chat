@@ -393,7 +393,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
                   </div>
                 </div>
               ) : (
-                <div className={`message ${chat.author === 'AI' ? 'from-bot' : 'from-user'}`}>
+                <div className={`message from-user`}>
                   {renderContent(chat.content)}
                 </div>
               )}
