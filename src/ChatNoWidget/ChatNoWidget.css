@@ -428,7 +428,7 @@
     width: 90%;
     padding: 16px;
     margin: 10px 0;
-    font-size: 16px;
+    font-size: 14px;
     text-align: right; /* Align text to the right */
     background-color: #053c6b;
     color: white;
@@ -448,5 +448,43 @@
   .menuButton svg {
     margin-right: 10px; /* Add some space between icon and text */
   }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Ensure the buttons are aligned to the left */
+    width: auto;
+    max-width: 300px; /* Adjust this based on how wide you want the buttons */
+    border: 2px solid #ccc; /* Slightly thicker grey border */
+    border-radius: 10px; /* Rounds the corners of the button group */
+    overflow: hidden; /* Ensures child elements respect the border radius */
+    background-color: #f9f9f9; /* Optional: Slight background color for better visibility */
+  }
+
+  .custom-button {
+    width: 100%;
+    padding: 15px;
+    border: none; /* Remove individual button borders */
+    border-bottom: 2px solid #ccc; /* Add a border between buttons */
+    background-color: white;
+    font-size: 16px;
+    color: #333;
+    text-align: center; /* Left align the text within the buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-button:last-child {
+    border-bottom: none; /* Remove bottom border for the last button */
+  }
+  
+  .custom-button:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Light grey background on hover */
+  }
+  
+  .custom-button:active {
+    background-color: rgba(0, 0, 0, 0.1); /* Slightly darker grey on click */
+  }
+  
   
   

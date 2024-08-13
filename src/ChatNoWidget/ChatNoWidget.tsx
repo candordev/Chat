@@ -7,7 +7,6 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import linkifyStr from 'linkify-string';
 
-
 interface Chat {
   _id: string;
   content: string;
@@ -25,7 +24,7 @@ interface ChatNoWidgetProps {
 
 function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const config = {
-    environment: 'productionTest', // Default environment
+    environment: 'localhost', // Default environment
     urls: {
       candoradmin: 'https://candoradmin.com/api',
       localhost: 'http://localhost:4000/api',
@@ -55,6 +54,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [city, setCity] = useState<string | null>(null);
+  const [chatStart, setChatStart] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Add this useEffect hook to scroll to the bottom when chats change
@@ -82,6 +82,8 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
       
       setUserType(userType);
       setCurrentPage(currentPage);
+
+      getChatStart();
 
       console.log("current session id: ", sessionId);
       console.log("current user type: ", userType);
@@ -120,6 +122,22 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
     setChats([]);
   }
 
+  const getChatStart = () => {
+    let start = localStorage.getItem('chatStart');
+    if (!start) {
+      const date = new Date();
+      start = date.toISOString();
+      localStorage.setItem('chatStart', start);
+    }
+    setChatStart(start);
+    return start;
+  }
+
+  const setChatStartHelper = (start: string) => {
+    localStorage.setItem('chatStart', start);
+    setChatStart(start);
+  }
+
   const fetchChats = async () => {
     try {
       if (!sessionId || !groupId) return;
@@ -155,8 +173,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   } 
 
   const menuToChatPage = () => {
-    resetSessionId()
-    setChats([])
+    handleUserTypeChange(null);
     changeCurrentPage('chat')
   }
 
@@ -182,6 +199,9 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
     setUserType(userType);
     resetChats();
     resetSessionId();
+    const date = new Date();
+    const start = date.toISOString();
+    setChatStartHelper(start);
   }
 
   const resetSessionId = () => {
@@ -190,7 +210,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
     setSessionId(newSessionId);
   };
 
-  const  sendChat = async (text: string) => {
+  const sendChat = async (text: string) => {
     try {
       const baseUrl = getBaseUrl();
       const tempChat: Chat = {
@@ -306,20 +326,6 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
 
   const renderMainMenu = () => (
     <div id="mainMenu">
-      <div className="dropdownContainer">
-        <label htmlFor="userTypeDropdown">Select what best describes you:</label>
-        <select
-          id="userTypeDropdown"
-          value={userType || ""}
-          onChange={(e) => handleUserTypeChange(e.target.value)}
-        >
-          <option value="">Select an option</option>
-          <option value="prospectiveResident">Looking to Rent a Home</option>
-          <option value="currentResident">Current Tenant</option>
-          <option value="owner">Property Owner</option>
-        </select>
-      </div>
-      {userType && (
         <>
           <button className="menuButton" onClick={menuToChatPage}>
             Chat
@@ -333,7 +339,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
               </g>
             </svg>
           </button>
-          <button className="menuButton">
+          <button className="menuButton" onClick={() => window.open("https://www.thirdstoneproperties.com/property-management", "_blank", "noopener,noreferrer")}>
             Email Us
             <svg width="25px" height="25px" viewBox="0 -2.5 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -352,7 +358,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
               </g>
             </svg>
           </button>
-          <button className="menuButton">
+          <button className="menuButton" onClick={() => window.open("https://www.thirdstoneproperties.com/rentals", "_blank", "noopener,noreferrer")}>
             Schedule Appointment
             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -363,15 +369,60 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
             </svg>
           </button>
         </>
-      )}
       
     </div>
   );
 
+  const automatedChats = !userType ? [{author: "AI", content: "Hi I'm Thirdstone Assistant. To get your conversation started, choose the option below that best describes you."}] : [{author: "AI", content: "Hi I'm Thirdstone Assistant. To get your conversation started, choose the option below that best describes you."}, {author: "AI", content: "Heard! Please select one of the following questions or type your own question."}]
   const renderChatInterface = () => (
     <>
       <div id="messagesView">
-        <div className="message from-bot">To get your conversation started, choose from one of the following options below or type a question in the entry field.</div>
+        {automatedChats.map((chat, index) => {
+          const isLastInGroup =
+          index === automatedChats.length - 1 ||
+          automatedChats[index + 1].author !== chat.author;
+
+          return (
+            <div key={index} className={`message-group AI`}>
+              <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                {isLastInGroup ? (
+                  <div className="ai-icon">
+                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 2C14 2.74028 13.5978 3.38663 13 3.73244V4H20C21.6569 4 23 5.34315 23 7V19C23 20.6569 21.6569 22 20 22H4C2.34315 22 1 20.6569 1 19V7C1 5.34315 2.34315 4 4 4H11V3.73244C10.4022 3.38663 10 2.74028 10 2C10 0.895431 10.8954 0 12 0C13.1046 0 14 0.895431 14 2ZM4 6H11H13H20C20.5523 6 21 6.44772 21 7V19C21 19.5523 20.5523 20 20 20H4C3.44772 20 3 19.5523 3 19V7C3 6.44772 3.44772 6 4 6ZM15 11.5C15 10.6716 15.6716 10 16.5 10C17.3284 10 18 10.6716 18 11.5C18 12.3284 17.3284 13 16.5 13C15.6716 13 15 12.3284 15 11.5ZM16.5 8C14.567 8 13 9.567 13 11.5C13 13.433 14.567 15 16.5 15C18.433 15 20 13.433 20 11.5C20 9.567 18.433 8 16.5 8ZM7.5 10C6.67157 10 6 10.6716 6 11.5C6 12.3284 6.67157 13 7.5 13C8.32843 13 9 12.3284 9 11.5C9 10.6716 8.32843 10 7.5 10ZM4 11.5C4 9.567 5.567 8 7.5 8C9.433 8 11 9.567 11 11.5C11 13.433 9.433 15 7.5 15C5.567 15 4 13.433 4 11.5ZM10.8944 16.5528C10.6474 16.0588 10.0468 15.8586 9.55279 16.1056C9.05881 16.3526 8.85858 16.9532 9.10557 17.4472C9.68052 18.5971 10.9822 19 12 19C13.0178 19 14.3195 18.5971 14.8944 17.4472C15.1414 16.9532 14.9412 16.3526 14.4472 16.1056C13.9532 15.8586 13.3526 16.0588 13.1056 16.5528C13.0139 16.7362 12.6488 17 12 17C11.3512 17 10.9861 16.7362 10.8944 16.5528Z" fill="#053c6b"></path> </g></svg>
+                  </div>
+                ) : (
+                  <div className="ai-icon-placeholder"></div>
+                )}
+                <div className={`message from-bot`}>
+                  {renderContent(chat.content)}
+                </div>
+              </div>
+              {chatStart && isLastInGroup && (
+                  <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <div className="ai-icon-placeholder"></div>
+                  <div className="timestamp">
+                    {`Thirdstone Assistant | ${formatTime(new Date(chatStart))}`}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+
+        })}
+
+          {chats.length === 0 && !userType && (
+            <div style={{flexDirection: 'row', display: 'flex'}}>
+              <div className="ai-icon-placeholder"></div>
+              <div className="button-container">
+                <button className="custom-button" onClick={()=>{handleUserTypeChange("prospectiveResident")}}>Looking To Rent A Home</button>
+                <button className="custom-button" onClick={()=>{handleUserTypeChange("currentResident")}}>Current Thirdstone Tenant</button>
+                <button className="custom-button" onClick={()=>{
+                    handleUserTypeChange("owner")
+                    setShowContactForm(true)
+                  }}>Property Owner</button>
+              </div>  
+          </div>
+        )}
+
         {chats.map((chat, index) => {
           const isLastInGroup =
             index === chats.length - 1 ||
@@ -436,56 +487,51 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
         </div>
       )}
       <div id="chatControls">
-        {/* <div id="chatOptions">
-          <div id="chatButtonsRow">
-            <button
-              id="prospectiveTenant"
-              className={classNames(
-                'optionText flex-1 m-1 p-1 text-white rounded transition duration-300 min-w-[90px] whitespace-nowrap hover:bg-[#053c6b]',
-                { 'selected bg-[#053c6b]': userType === 'prospectiveResident' },
-                { 'bg-[#bcd1ea]': userType !== 'prospectiveResident'}
-              )}
-              onClick={() => handleUserTypeChange('prospectiveResident')}
+      
+          <div id="chatInputContainer" style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+              id="homeButton"
+              style={{ marginRight: '10px', cursor: 'pointer' }}
+              onClick={() => changeCurrentPage('main-menu')}
             >
-              Prospective Tenant
-            </button>
-            <button
-              id="currentTenant"
-              className={classNames(
-                'optionText flex-1 m-1 p-1 text-white rounded transition duration-300 min-w-[90px] whitespace-nowrap hover:bg-[#053c6b]',
-                { 'selected bg-[#053c6b]': userType === 'currentResident' },
-                { 'bg-[#bcd1ea]': userType !== 'currentResident'}
-              )}
-              onClick={() => handleUserTypeChange('currentResident')}
-            >
-              Current Tenant
-            </button>
-            <button
-              id="homeOwner"
-              className={classNames(
-                'optionText flex-1 m-1 p-1 text-white rounded transition duration-300 min-w-[90px] whitespace-nowrap hover:bg-[#053c6b]',
-                { 'selected bg-[#053c6b]': userType === 'owner' },
-                { 'bg-[#bcd1ea]': userType !== 'owner'}
-              )}
-              onClick={() => handleUserTypeChange('owner')}
-            >
-              Home Owner
-            </button>
-          </div>
-        </div> */}
-        {userType && 
-          <div id="chatInputContainer">
+              <svg
+                width="25px"
+                height="25px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M12 2.00102L3 9.00102V20.001H9V14.001H15V20.001H21V9.00102L12 2.00102ZM5 10.218V18.001H7V12.001H17V18.001H19V10.218L12 4.67202L5 10.218Z"
+                    fill="#000000"
+                  ></path>
+                </g>
+              </svg>
+            </div>
             <input
               type="text"
               id="messageInput"
               placeholder="Type your message..."
               value={inputChat}
+              disabled={loading || !userType}
               onChange={(e) => setInputChat(e.target.value)}
               onKeyDown={handleKeyDown}
+              style={{ flex: '1' }}
             />
-            <button id="sendButton" onClick={()=>{sendChat(inputChat)}}>Send</button>
+            <button id="sendButton" onClick={() => sendChat(inputChat)}>
+              Send
+            </button>
           </div>
-        }
+        
       </div>
     </>
   );
@@ -500,7 +546,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
         </div>
         <div className="ml-4 flex-grow flex flex-col justify-center">
           <span className="text-lg font-medium">Thirdstone Assistant</span>
-          <span className="mt-1 text-gray-500 text-sm font-light"  onClick={() => changeCurrentPage('main-menu')}>Online</span>
+          <span className="mt-1 text-gray-500 text-sm font-light" >Online</span>
         </div>
         {closeChat && (
           <button id="closeButton" onClick={closeChat}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" className="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
@@ -511,6 +557,22 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
         <div id="contactFormContainer">
           <div id="contactForm">
             <h3 className="font-bold">Contact Information</h3>
+            {userType && userType === 'owner' && (
+              <p style={{marginBottom: '10px'}}>
+                If you do not already manage your property with us, please fill this out! Also reach out to us directly
+                <span style={{ marginLeft: '5px' }}>
+                  <a 
+                    href="https://www.thirdstoneproperties.com/property-management" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ color: 'blue', textDecoration: 'underline'}}
+                  >
+                    here
+                  </a>.
+                </span>
+              </p>
+            )}
+
             <input type="text" id="firstName" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
             <input type="text" id="lastName" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
             <input type="email" id="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
