@@ -88,13 +88,39 @@
   }
   
   .message {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 5px;
     border-radius: 5px;
     background-color: #f9f9f9;
     display: block;
     width: fit-content;
     max-width: 80%;
+  }
+
+  .timestamp {
+    color: gray;
+    font-size: 9pt;
+    margin-bottom: 8px;
+    margin-left: 5px;
+  }
+
+  .timestamp-container {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .timestamp-container.with-placeholder .timestamp {
+    margin-left: 32px; /* Adjust as needed for placeholder width */
+  }
+
+  .message-group.from-bot + .timestamp {
+    text-align: left;
+    margin-left: 4px;
+  }
+  
+  .message-group.from-user + .timestamp {
+    text-align: right;
+    margin-right: 4px;
   }
 
   .message a {
@@ -125,7 +151,34 @@
     border-radius: 15px;
     font-size: 14px; /* Smaller text size */
     font-weight: 500;
+    /* margin-left: 30px; */
   }
+
+  .ai-icon {
+    width: 35px;
+    height: 35px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+  }
+
+  .ai-icon-placeholder {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+  }
+  
   #exampleQuestionsContainer {
     padding: 10px;
     /* text-align: center; */
@@ -149,6 +202,7 @@
     width: 100%;
     text-align: center;
   }
+
   #chatControls {
     transition: margin-top 0.3s ease;
     margin-top: 0; /* Initially, no extra space */
@@ -209,7 +263,7 @@
     margin-right: 10px; /* Ensures spacing between input and button */
     outline: none; /* Removes the default focus outline */
     font-family: 'Roboto', sans-serif;
-    font-size: 12px;
+    font-size: 14px;
   }
   
   #sendButton {
@@ -346,4 +400,132 @@
     color: white; 
     cursor: pointer; 
   }
+  
+  #mainMenu {
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    align-items: center;
+    background-color: #eaeef3;
+    height: calc(100% - 56px); /* Adjust to account for the header height */
+  }
+  
+  .dropdownContainer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  #userTypeDropdown {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .menuButton {
+    width: 90%;
+    padding: 16px;
+    margin: 10px 0;
+    font-size: 14px;
+    text-align: right; /* Align text to the right */
+    background-color: #053c6b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex; /* Use flexbox */
+    justify-content: space-between; /* Space between icon and text */
+    align-items: center; /* Center items vertically */
+  }
+  
+  .menuButton:hover {
+    background-color: #042a4b;
+  }
+  
+  .menuButton svg {
+    margin-right: 10px; /* Add some space between icon and text */
+  }
+
+  .user-type-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Ensure the buttons are aligned to the left */
+    width: auto;
+    max-width: 300px; /* Adjust this based on how wide you want the buttons */
+    border: 2px solid #ccc; /* Slightly thicker grey border */
+    border-radius: 10px; /* Rounds the corners of the button group */
+    overflow: hidden; /* Ensures child elements respect the border radius */
+    background-color: #f9f9f9; /* Optional: Slight background color for better visibility */
+  }
+
+  .user-type-button {
+    width: 100%;
+    padding: 10px 20px;
+    border: none; /* Remove individual button borders */
+    border-bottom: 2px solid #ccc; /* Add a border between buttons */
+    background-color: white;
+    font-size: 14px;
+    color: #333;
+    text-align: center; /* Left align the text within the buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .user-type-button:last-child {
+    border-bottom: none; /* Remove bottom border for the last button */
+  }
+  
+  .user-type-button:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Light grey background on hover */
+  }
+  
+  .user-type-button:active {
+    background-color: rgba(0, 0, 0, 0.1); /* Slightly darker grey on click */
+  }
+  
+  #confirmationModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1000; /* Ensure the modal is on top */
+  }
+  
+  .modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1001; /* Ensure the content is on top of the overlay */
+  }
+  
+  .modalButtons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .modalButtons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #053c6b;
+    color: white;
+  }
+  
+  .modalButtons button:hover {
+    background-color: #032c54;
+  }
+  
   

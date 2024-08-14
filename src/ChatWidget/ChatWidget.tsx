@@ -1,13 +1,8 @@
 import { useState } from 'react';
 import './ChatWidget.css';
 import ChatNoWidget from '../ChatNoWidget/ChatNoWidget';
-import ChatNoWidgetProperties from '../ChatNoWidget/ChatNoWidgetProperties';
 
-interface ChatWidgetProps {
-  chatType?: string;
-}
-
-function ChatWidget({ chatType }: ChatWidgetProps) {
+function ChatWidget() {
   const [showPopup, setShowPopup] = useState<boolean>(true);
   const [showChat, setShowChat] = useState<boolean>(false);
 
@@ -73,8 +68,6 @@ function ChatWidget({ chatType }: ChatWidgetProps) {
             </svg>
           </div>
         </div>
-      ) : chatType === 'properties' ? (
-        <ChatNoWidgetProperties closeChat={handleCloseChat} />
       ) : (
         <ChatNoWidget closeChat={handleCloseChat} />
       )}
