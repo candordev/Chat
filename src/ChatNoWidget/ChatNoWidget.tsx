@@ -56,6 +56,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const [city, setCity] = useState<string | null>(null);
   const [chatStart, setChatStart] = useState<string | null>(null);
   const [showExitConfirmation, setShowExitConfirmation] = useState<boolean>(false);
+  const [homeButtonClicked, setHomeButtonClicked] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Add this useEffect hook to scroll to the bottom when chats change
@@ -191,7 +192,11 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   };
 
   const handleCloseClick = () => {
-    setShowExitConfirmation(true);
+    if (currentPage === 'chat') {
+      setShowExitConfirmation(true);
+    } else if (closeChat) {
+      closeChat();
+    }
   };
 
   const handleUserTypeChange = (userType: string | null) => {
@@ -332,7 +337,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const renderMainMenu = () => (
     <div id="mainMenu">
         <>
-          {showExitConfirmation && (
+          {/* {showExitConfirmation && (
             <div id="confirmationModal">
               <div className="modalContent">
                 <h3>Are you sure you want to exit the session?</h3>
@@ -348,7 +353,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
           <button className="menuButton" onClick={menuToChatPage}>
             Chat
             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#FFFFFF">
@@ -452,10 +457,11 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
               <div className="modalButtons">
                 <button onClick={() => {
                   setShowExitConfirmation(false);
-                  if (closeChat) {
+                  if (closeChat && !homeButtonClicked) {
                     closeChat();
-                    changeCurrentPage('main-menu');
                   }
+                  setHomeButtonClicked(false);
+                  changeCurrentPage('main-menu');
                 }}>Yes</button>
                 <button onClick={() => setShowExitConfirmation(false)}>No</button>
               </div>
@@ -532,7 +538,10 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
             <div
               id="homeButton"
               style={{ marginRight: '10px', cursor: 'pointer' }}
-              onClick={() => changeCurrentPage('main-menu')}
+              onClick={() => {
+                setHomeButtonClicked(true)
+                handleCloseClick()
+              }}
             >
               <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.77778 10.2222V18C5.77778 19.1046 6.67321 20 7.77778 20H12M5.77778 10.2222L11.2929 4.70711C11.6834 4.31658 12.3166 4.31658 12.7071 4.70711L17.5 9.5M5.77778 10.2222L4 12M18.2222 10.2222V18C18.2222 19.1046 17.3268 20 16.2222 20H12M18.2222 10.2222L20 12M18.2222 10.2222L17.5 9.5M17.5 9.5V6M12 20V15" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
             </div>
