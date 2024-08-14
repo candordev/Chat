@@ -497,7 +497,7 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    z-index: 1000; /* Ensure the modal is on top */
+    z-index: 1003; /* Ensure the modal is on top */
   }
   
   .modalContent {

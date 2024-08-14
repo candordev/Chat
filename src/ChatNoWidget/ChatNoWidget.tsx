@@ -332,6 +332,23 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const renderMainMenu = () => (
     <div id="mainMenu">
         <>
+          {showExitConfirmation && (
+            <div id="confirmationModal">
+              <div className="modalContent">
+                <h3>Are you sure you want to exit the session?</h3>
+                <div className="modalButtons">
+                  <button onClick={() => {
+                    setShowExitConfirmation(false);
+                    if (closeChat) {
+                      closeChat();
+                      changeCurrentPage('main-menu');
+                    }
+                  }}>Yes</button>
+                  <button onClick={() => setShowExitConfirmation(false)}>No</button>
+                </div>
+              </div>
+            </div>
+          )}
           <button className="menuButton" onClick={menuToChatPage}>
             Chat
             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#FFFFFF">
