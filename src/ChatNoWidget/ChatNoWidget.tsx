@@ -55,6 +55,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const [longitude, setLongitude] = useState<number | null>(null);
   const [city, setCity] = useState<string | null>(null);
   const [chatStart, setChatStart] = useState<string | null>(null);
+  const [showExitConfirmation, setShowExitConfirmation] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Add this useEffect hook to scroll to the bottom when chats change
@@ -187,6 +188,10 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
 
   const generateSessionId = (): string => {
     return Math.random().toString(36).substr(2, 9);
+  };
+
+  const handleCloseClick = () => {
+    setShowExitConfirmation(true);
   };
 
   const handleUserTypeChange = (userType: string | null) => {
@@ -412,14 +417,32 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
           {chats.length === 0 && !userType && (
             <div style={{flexDirection: 'row', display: 'flex'}}>
               <div className="ai-icon-placeholder"></div>
-              <div className="button-container">
-                <button className="custom-button" onClick={()=>{handleUserTypeChange("prospectiveResident")}}>Looking To Rent A Home</button>
-                <button className="custom-button" onClick={()=>{handleUserTypeChange("currentResident")}}>Current Thirdstone Tenant</button>
-                <button className="custom-button" onClick={()=>{
+              <div className="user-type-button-container">
+                <button className="user-type-button" onClick={()=>{handleUserTypeChange("prospectiveResident")}}>Looking To Rent A Home</button>
+                <button className="user-type-button" onClick={()=>{handleUserTypeChange("currentResident")}}>Current Thirdstone Tenant</button>
+                <button className="user-type-button" onClick={()=>{
                     handleUserTypeChange("owner")
                     setShowContactForm(true)
                   }}>Property Owner</button>
               </div>  
+          </div>
+        )}
+
+        {showExitConfirmation && (
+          <div id="confirmationModal">
+            <div className="modalContent">
+              <h3>Are you sure you want to exit the session?</h3>
+              <div className="modalButtons">
+                <button onClick={() => {
+                  setShowExitConfirmation(false);
+                  if (closeChat) {
+                    closeChat();
+                    changeCurrentPage('main-menu');
+                  }
+                }}>Yes</button>
+                <button onClick={() => setShowExitConfirmation(false)}>No</button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -494,39 +517,19 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
               style={{ marginRight: '10px', cursor: 'pointer' }}
               onClick={() => changeCurrentPage('main-menu')}
             >
-              <svg
-                width="25px"
-                height="25px"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M12 2.00102L3 9.00102V20.001H9V14.001H15V20.001H21V9.00102L12 2.00102ZM5 10.218V18.001H7V12.001H17V18.001H19V10.218L12 4.67202L5 10.218Z"
-                    fill="#000000"
-                  ></path>
-                </g>
-              </svg>
+              <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.77778 10.2222V18C5.77778 19.1046 6.67321 20 7.77778 20H12M5.77778 10.2222L11.2929 4.70711C11.6834 4.31658 12.3166 4.31658 12.7071 4.70711L17.5 9.5M5.77778 10.2222L4 12M18.2222 10.2222V18C18.2222 19.1046 17.3268 20 16.2222 20H12M18.2222 10.2222L20 12M18.2222 10.2222L17.5 9.5M17.5 9.5V6M12 20V15" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
             </div>
             <input
               type="text"
               id="messageInput"
-              placeholder="Type your message..."
+              placeholder={userType ? "Type your message..." : "Select one of the options above to start chatting"}
               value={inputChat}
               disabled={loading || !userType}
               onChange={(e) => setInputChat(e.target.value)}
               onKeyDown={handleKeyDown}
               style={{ flex: '1' }}
             />
+
             <button id="sendButton" onClick={() => sendChat(inputChat)}>
               Send
             </button>
@@ -549,7 +552,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
           <span className="mt-1 text-gray-500 text-sm font-light" >Online</span>
         </div>
         {closeChat && (
-          <button id="closeButton" onClick={closeChat}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" className="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+          <button id="closeButton" onClick={handleCloseClick}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" className="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         )}
       </div>
       {currentPage === 'main-menu' ? renderMainMenu() : renderChatInterface()}
