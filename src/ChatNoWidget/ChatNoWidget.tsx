@@ -349,7 +349,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
               </g>
             </svg>
           </button>
-          <button className="menuButton" onClick={() => window.open("https://www.thirdstoneproperties.com/property-management", "_blank", "noopener,noreferrer")}>
+          <button className="menuButton" onClick={() => window.open("https://thirdstoneproperties.com/#contact-us", "_blank", "noopener,noreferrer")}>
             Email Us
             <svg width="25px" height="25px" viewBox="0 -2.5 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -368,7 +368,7 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
               </g>
             </svg>
           </button>
-          <button className="menuButton" onClick={() => window.open("https://thirdstoneproperties.com/#contact-us", "_blank", "noopener,noreferrer")}>
+          <button className="menuButton" onClick={() => window.open("https://calendly.com/thirdstoneproperties/30min", "_blank", "noopener,noreferrer")}>
             Schedule Appointment
             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
