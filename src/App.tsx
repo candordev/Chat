@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ChatComponent from './ChatComponent';
+import ChatComponent from './ChatComponent/ChatComponent';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/:chatFormat?" element={<ChatComponent />} />
+        <Route path="/:chatFormat?/:mobile?" element={<ChatComponent />} />
       </Routes>
     </Router>
   );
