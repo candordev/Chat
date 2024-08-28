@@ -23,7 +23,7 @@ interface ChatNoWidgetProps {
   mobile?: string;
 }
 
-function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
+function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   const config = {
     environment: 'candoradmin', // Default environment
     urls: {
@@ -324,7 +324,12 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
   };
 
   const renderContent = (content: string) => {
-    const options = {};
+    const options = {
+      attributes: {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      },
+    };
     linkifyStr(content, options);
     return <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>;
   };
