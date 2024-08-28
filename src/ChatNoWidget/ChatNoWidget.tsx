@@ -23,7 +23,7 @@ interface ChatNoWidgetProps {
   mobile?: string;
 }
 
-function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
+function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
   const config = {
     environment: 'candoradmin', // Default environment
     urls: {
@@ -557,30 +557,50 @@ function ChatNoWidget({closeChat}: ChatNoWidgetProps) {
   return (
       <div id="chatContainer" className={'slideUp'}>
         <div id="chatHeader">
-          {/* {mobile && mobile === 'true' && (
-            <div id="backArrow" className="mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-arrow-left"
+        <div>
+            {mobile === 'true' ? (
+              <div
+                id="backArrow"
+                className="mr-2"
+                onClick={() => (window.location.href = 'https://www.thirdstoneproperties.com')}
+                style={{ cursor: 'pointer' }}
               >
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-              </svg>
-            </div>
-          )} */}
-          <div id="chatIconHeader">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3399ff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" className="feather feather-message-square">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="feather feather-arrow-left"
+                >
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+              </div>
+            ) : (
+              <div id="chatIconHeader">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#3399ff"
+                  strokeWidth="2.3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="feather feather-message-square"
+                >
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+            )}
           </div>
+
           <div className="ml-4 flex-grow flex flex-col justify-center">
             <span className="text-lg font-medium">Thirdstone Assistant</span>
             <span

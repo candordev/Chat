@@ -12,7 +12,7 @@ const ChatComponent = () => {
   if (chatFormat === "no-widget") {
     return (
       <div >
-        {mobile === "true" && (
+        {mobile === "truesadf" && (
           <div className="back-image-container" onClick={() => window.location.href = 'https://www.thirdstoneproperties.com'} style={{cursor: 'pointer'}}>
             <img
               src={ThirdstoneLogo}
