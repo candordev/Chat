@@ -144,6 +144,7 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
   const fetchChats = async () => {
     try {
       if (!sessionId || !groupId) return;
+      console.log("FETCHING GROUP ID", groupId);
       const baseUrl = getBaseUrl();
       const response = await fetch(`${baseUrl}/chat/getWebChats?sessionId=${sessionId}&page=1&limit=100&groupID=${groupId}`, {
         method: "GET",
