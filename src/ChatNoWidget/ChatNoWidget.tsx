@@ -331,11 +331,11 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
   //   return <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>;
   // };
 
-  const sendMessageToParent = (url: string) => {
-    console.log(`Sending message to parent: ${url}`);
-    window.parent.postMessage({ type: 'OPEN_LINK', url }, 'https://www.candornow.com');
-    window.parent.postMessage({ type: 'OPEN_LINK', url }, 'https://www.thirdstoneproperties.com');
-};
+//   const sendMessageToParent = (url: string) => {
+//     console.log(`Sending message to parent: ${url}`);
+//     window.parent.postMessage({ type: 'OPEN_LINK', url }, 'https://www.candornow.com');
+//     window.parent.postMessage({ type: 'OPEN_LINK', url }, 'https://www.thirdstoneproperties.com');
+// };
 
 const renderContent = (content: string) => {
     // Custom link renderer with TypeScript types
