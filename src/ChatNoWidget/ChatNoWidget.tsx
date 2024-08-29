@@ -325,10 +325,13 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
 
   const renderContent = (content: string) => {
     const options = {
-
-    };
-    linkifyStr(content, options);
-    return <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>;
+          attributes: {
+              target: '_blank', // Opens the link in a new tab
+              rel: 'noopener noreferrer' // Prevents the new page from being able to access the window.opener property and ensures it runs in a separate process
+          },
+      };
+      const linkifiedContent = linkifyStr(content, options);
+      return <ReactMarkdown remarkPlugins={[remarkGfm]}>{linkifiedContent}</ReactMarkdown>;
   };
   
   const formatTime = (date: Date) => {
