@@ -343,7 +343,8 @@ const renderContent = (content: string) => {
         const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
             e.preventDefault(); // Prevent default link behavior
             if (href) {
-                sendMessageToParent(href); // Call the parent method with the URL
+                // sendMessageToParent(href); // Call the parent method with the URL
+                window.open(href, "_blank", "noopener,noreferrer")
             }
         };
 
