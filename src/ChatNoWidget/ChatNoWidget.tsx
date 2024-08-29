@@ -35,7 +35,7 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
 
   const exampleQuestions: ExampleQuestions = {
     prospectiveResident: ["How do I view a home?", "Is there a pet policy?", "How much is the security deposit?"],
-    currentResident: ["How do I submit a maintenance request?", "How do I login to the resident portal?", "How do I pay rent online?"],
+    currentResident: ["How do I submit a maintenance request?", "How do I login to my resident portal?", "How do I pay rent online?"],
     owner: ["Are you licensed?", "Do you have an owner portal?", "Will you manage my property if I already have a tenant in place?"]
   };
 
