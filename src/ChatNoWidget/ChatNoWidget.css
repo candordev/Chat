@@ -103,6 +103,9 @@
     display: block;
     width: fit-content;
     max-width: 80%;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;
   }
 
   .timestamp {

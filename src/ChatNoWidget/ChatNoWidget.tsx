@@ -325,10 +325,7 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
 
   const renderContent = (content: string) => {
     const options = {
-      attributes: {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-      },
+
     };
     linkifyStr(content, options);
     return <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>;
