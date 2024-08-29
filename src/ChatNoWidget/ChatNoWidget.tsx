@@ -71,7 +71,7 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
     // Set groupId based on the environment
     console.log('useEffect called');
     const initialize = async () => {
-      if (config.environment === 'candoradmin') {
+      if (config.environment === 'localhost') {
         setGroupId('6657a0e9d9f0ae27bd3e0021'); // DEV groupId
       } else if (config.environment === 'candoradmin') {
         setGroupId('663fa89af38d72f0490da655'); // PRODUCTION groupId
