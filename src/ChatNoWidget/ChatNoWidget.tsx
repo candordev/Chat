@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, ReactNode } from 'react'
 import classNames from 'classnames';
 import './ChatNoWidget.css'
 import React from 'react';
 import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import linkifyStr from 'linkify-string';
+// import linkifyStr from 'linkify-string';
 
 interface Chat {
   _id: string;
@@ -71,7 +71,7 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
     // Set groupId based on the environment
     console.log('useEffect called');
     const initialize = async () => {
-      if (config.environment === 'localhost') {
+      if (config.environment === 'candoradmin') {
         setGroupId('6657a0e9d9f0ae27bd3e0021'); // DEV groupId
       } else if (config.environment === 'candoradmin') {
         setGroupId('663fa89af38d72f0490da655'); // PRODUCTION groupId
@@ -338,11 +338,13 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
 };
 
 const renderContent = (content: string) => {
-    // Custom link renderer
-    const LinkRenderer = ({ href, children }) => {
-        const handleClick = (e) => {
+    // Custom link renderer with TypeScript types
+    const LinkRenderer = ({ href, children }: { href?: string; children?: ReactNode }) => {
+        const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
             e.preventDefault(); // Prevent default link behavior
-            sendMessageToParent(href); // Call the parent method with the URL
+            if (href) {
+                sendMessageToParent(href); // Call the parent method with the URL
+            }
         };
 
         return (
@@ -362,7 +364,7 @@ const renderContent = (content: string) => {
             {content}
         </ReactMarkdown>
     );
-};
+  };
   
   const formatTime = (date: Date) => {
     return format(new Date(date), 'p');
