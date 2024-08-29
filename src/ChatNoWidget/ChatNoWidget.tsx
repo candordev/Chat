@@ -323,16 +323,46 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
     }
   };
 
-  const renderContent = (content: string) => {
-    const options = {
-          attributes: {
-              target: '_blank', // Opens the link in a new tab
-              rel: 'noopener noreferrer' // Prevents the new page from being able to access the window.opener property and ensures it runs in a separate process
-          },
-      };
-      const linkifiedContent = linkifyStr(content, options);
-      return <ReactMarkdown remarkPlugins={[remarkGfm]}>{linkifiedContent}</ReactMarkdown>;
-  };
+  // const renderContent = (content: string) => {
+  //   const options = {
+
+  //   };
+  //   linkifyStr(content, options);
+  //   return <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>;
+  // };
+
+  const sendMessageToParent = (url: string) => {
+    console.log(`Sending message to parent: ${url}`);
+    window.parent.postMessage({ type: 'OPEN_LINK', url }, 'https://www.candornow.com');
+    window.parent.postMessage({ type: 'OPEN_LINK', url }, 'https://www.thirdstoneproperties.com');
+};
+
+const renderContent = (content: string) => {
+    // Custom link renderer
+    const LinkRenderer = ({ href, children }) => {
+        const handleClick = (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            sendMessageToParent(href); // Call the parent method with the URL
+        };
+
+        return (
+            <a href={href} onClick={handleClick} style={{ cursor: 'pointer', color: 'blue' }}>
+                {children}
+            </a>
+        );
+    };
+
+    return (
+        <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+                a: LinkRenderer, // Override the default 'a' tag rendering
+            }}
+        >
+            {content}
+        </ReactMarkdown>
+    );
+};
   
   const formatTime = (date: Date) => {
     return format(new Date(date), 'p');

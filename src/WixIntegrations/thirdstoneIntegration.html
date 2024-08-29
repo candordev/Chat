@@ -70,6 +70,17 @@
         }
     }, false);
 
+    window.addEventListener('message', (event) => {
+        // Ensure the message comes from a trusted source
+        const trustedOrigins = ["https://main--candorchatwidget.netlify.app"];
+        
+        if (trustedOrigins.includes(event.origin) && event.data.type === 'OPEN_LINK') {
+            const url = event.data.url;
+            // Open the URL in a new tab
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+    }, false);
+
     // Initial detection of mobile screen
     detectMobile();
 
