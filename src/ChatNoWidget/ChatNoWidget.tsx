@@ -25,7 +25,7 @@ interface ChatNoWidgetProps {
 
 function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
   const config = {
-    environment: 'candoradmin', // Default environment
+    environment: 'productionTest', // Default environment
     urls: {
       candoradmin: 'https://candoradmin.com/api',
       localhost: 'http://localhost:4000/api',
@@ -301,7 +301,8 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
               lastName: lastName,
               email: email,
               phoneNumber: phoneNumber,
-              groupId: groupId
+              groupId: groupId,
+              type: userType
           })
       });
       if (response.ok) {
@@ -409,7 +410,7 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
     </div>
   );
 
-  const automatedChats = !userType ? [{author: "AI", content: "Hi I'm Thirdstone Assistant. To get your conversation started, choose the option below that best describes you."}] : [{author: "AI", content: "Hi I'm Thirdstone Assistant. To get your conversation started, choose the option below that best describes you."}, {author: "AI", content: "Heard! Please select one of the following questions or type your own question."}]
+  const automatedChats = !userType ? [{author: "AI", content: "Hi I'm Candor Assistant. To get your conversation started, choose the option below that best describes you."}] : [{author: "AI", content: "Hi I'm Candor Assistant. To get your conversation started, choose the option below that best describes you."}, {author: "AI", content: "Heard! Please select one of the following questions or type your own question."}]
   const renderChatInterface = () => (
     <>
       <div id="messagesView">
@@ -436,7 +437,7 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
                   <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                   <div className="ai-icon-placeholder"></div>
                   <div className="timestamp">
-                    {`Thirdstone Assistant | ${formatTime(new Date(chatStart))}`}
+                    {`Candor Assistant | ${formatTime(new Date(chatStart))}`}
                   </div>
                 </div>
               )}
@@ -507,7 +508,7 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                   <div className="ai-icon-placeholder"></div>
                   <div className="timestamp">
-                    {`Thirdstone Assistant | ${formatTime(chat.date)}`}
+                    {`Candor Assistant | ${formatTime(chat.date)}`}
                   </div>
                 </div>
               )}
@@ -622,7 +623,7 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
           </div>
 
           <div className="ml-4 flex-grow flex flex-col justify-center">
-            <span className="text-lg font-medium">Thirdstone Assistant</span>
+            <span className="text-lg font-medium">Candor Assistant</span>
             <span
               className={`mt-1 text-sm font-light ${
                 currentPage === 'chat' ? 'text-green-600' : 'text-gray-500'
