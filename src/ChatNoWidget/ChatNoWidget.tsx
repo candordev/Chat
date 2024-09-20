@@ -25,7 +25,7 @@ interface ChatNoWidgetProps {
 
 function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
   const config = {
-    environment: 'productionTest', // Default environment
+    environment: 'candoradmin', // Default environment
     urls: {
       candoradmin: 'https://candoradmin.com/api',
       localhost: 'http://localhost:4000/api',
