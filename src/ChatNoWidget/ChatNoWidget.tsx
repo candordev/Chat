@@ -144,7 +144,8 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
       if (!sessionId || !groupId) return;
       console.log("FETCHING GROUP ID", groupId);
       const baseUrl = getBaseUrl();
-      const response = await fetch(`${baseUrl}/chat/getWebChats?sessionId=${sessionId}&page=1&limit=100&groupID=${groupId}`, {
+      const url = `${baseUrl}/chat/getChatUsingSessionID?sessionId=${sessionId}&page=1&limit=100&groupID=${groupId}`
+      const response = await fetch(url, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
       });
@@ -253,7 +254,10 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
           city: city
         })
       });
-      if (!response.ok) throw new Error('Failed to send chat');
+      if (!response.ok) {
+        console.error('Failed to send chat');
+        throw new Error('Failed to send chat');
+      }
     
       const responseData = await response.json();
 
