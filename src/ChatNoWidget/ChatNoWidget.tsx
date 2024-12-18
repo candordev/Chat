@@ -29,7 +29,8 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
     urls: {
       candoradmin: 'https://candoradmin.com/api',
       localhost: 'http://localhost:4000/api',
-      productionTest: 'https://candoradmin.com/api'
+      productionTest: 'https://candoradmin.com/api',
+      demo: 'https://candoradmin.com/api'
     }
   };
 
@@ -73,13 +74,17 @@ function ChatNoWidget({closeChat, mobile}: ChatNoWidgetProps) {
     const initialize = async () => {
       if (config.environment === 'candoradmin') {
         setGroupId('663fa89af38d72f0490da655'); // PRODUCTION groupId
-      } else {
+      } else if (config.environment === 'localhost') { 
         setGroupId('6657a0e9d9f0ae27bd3e0021'); // DEV groupId
+      } else if (config.environment === 'productionTest') {
+        setGroupId('6657a0e9d9f0ae27bd3e0021'); // DEV groupId
+      } else if (config.environment === 'demo') {
+        setGroupId('6757586d2dd23a5a666c540f'); // DEMO groupId
       }
 
       let sessionId = getSessionId(); 
-      let userType = getUserType();
-      let currentPage = getCurrentPage();
+      const userType = getUserType();
+      const currentPage = getCurrentPage();
       
       setUserType(userType);
       setCurrentPage(currentPage);

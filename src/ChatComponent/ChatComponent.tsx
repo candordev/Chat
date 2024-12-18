@@ -8,7 +8,6 @@ import ThirdstoneLogo from './ThirdstoneLogo.png';
 const ChatComponent = () => {
   const { chatFormat } = useParams<{ chatFormat: string }>();
   const { mobile } = useParams<{ mobile: string }>();
-  console.log("MOBILE PARAMS", mobile);
   if (chatFormat === "no-widget") {
     return (
       <div >
